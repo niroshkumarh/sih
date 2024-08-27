@@ -736,5 +736,68 @@
 			}
 		</script>
 
+
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        // Prevent the default form submission
+        event.preventDefault();
+        
+        // Determine which form section is visible
+        const applyOption = document.getElementById('applyOption').value;
+
+        let isValid = true;
+
+        // Validate the "Have an Idea + Team" section
+        if (applyOption === 'ideaTeam') {
+            const category = document.getElementById('category').value;
+            const problemStatement = document.getElementById('problemStatement').value;
+            const solutionPitch = document.getElementById('solutionPitch').value;
+
+            if (!category || !problemStatement || !solutionPitch) {
+                isValid = false;
+                alert('Please fill in all the required fields for "Have an Idea + Team".');
+            }
+        }
+
+        // Validate the "Have an Idea, No Team" section
+        else if (applyOption === 'ideaNoTeam') {
+            const category2 = document.getElementById('category2').value;
+            const problemStatement2 = document.getElementById('problemStatement2').value;
+            const solutionPitch2 = document.getElementById('solutionPitch2').value;
+
+            if (!category2 || !problemStatement2 || !solutionPitch2) {
+                isValid = false;
+                alert('Please fill in all the required fields for "Have an Idea, No Team".');
+            }
+        }
+
+        // Validate the "Have a Team, No Idea" section
+        else if (applyOption === 'teamNoIdea') {
+            const teamMembers = document.querySelectorAll('#teamNoIdeaMembers .team-member-row');
+            teamMembers.forEach((member) => {
+                const name = member.querySelector('input[placeholder="Name"]').value;
+                const rollNumber = member.querySelector('input[placeholder="Roll Number"]').value;
+                const email = member.querySelector('input[placeholder="Email"]').value;
+                const skills = member.querySelector('input[placeholder="Skills"]').value;
+
+                if (!name || !rollNumber || !email || !skills) {
+                    isValid = false;
+                    alert('Please fill in all the required fields for "Have a Team, No Idea".');
+                    return;
+                }
+            });
+        }
+
+        // If the form is valid, submit it
+        if (isValid) {
+            this.submit();
+        }
+    });
+</script>
+
+
+
+
 	</body>
 </html>
