@@ -749,36 +749,38 @@ function resetTeamMembers() {
         }
     }
 
-    function addNoIdeaTeamMember() {
-        if (memberCount >= maxMembers) return;
 
-        memberCount++;
-        const memberRow = document.createElement('div');
-        memberRow.className = 'team-member-row';
-        memberRow.innerHTML = `
-            <input type="text" class="form-control" name="teamNoIdeaMemberName${memberCount}" placeholder="Name" required>
-            <input type="text" class="form-control" name="teamNoIdeaMemberRoll${memberCount}" placeholder="Roll Number" required>
-            <input type="email" class="form-control" name="teamNoIdeaMemberEmail${memberCount}" placeholder="Email" required>
-            <input type="text" class="form-control" name="teamNoIdeaMemberSkills${memberCount}" placeholder="Skills" required>
-            <button type="button" class="btn remove-member-btn" onclick="removeTeamMember(this)">Remove</button>
-        `;
-        document.getElementById('teamNoIdeaMembers').appendChild(memberRow);
 
-        if (memberCount >= maxMembers) {
-            document.getElementById('submitBtn').style.display = 'none';
-        }
+function addNoIdeaTeamMember() {
+    if (memberCount >= maxMembers) return;
+
+    memberCount++;
+    const memberRow = document.createElement('div');
+    memberRow.className = 'team-member-row';
+    memberRow.innerHTML = `
+        <input type="text" class="form-control" name="teamNoIdeaMemberName${memberCount}" placeholder="Name" required>
+        <input type="text" class="form-control" name="teamNoIdeaMemberRoll${memberCount}" placeholder="Roll Number" required>
+        <input type="email" class="form-control" name="teamNoIdeaMemberEmail${memberCount}" placeholder="Email" required>
+        <input type="text" class="form-control" name="teamNoIdeaMemberSkills${memberCount}" placeholder="Skills" required>
+        <button type="button" class="btn remove-member-btn" onclick="removeTeamMember(this)">Remove</button>
+    `;
+    document.getElementById('teamNoIdeaMembers').appendChild(memberRow);
+
+    // Hide the "Add Team Member" button if maxMembers reached
+    if (memberCount >= maxMembers) {
+        document.getElementById('addTeamMemberBtn').style.display = 'none';
     }
+}
 
-    function removeTeamMember(button) {
-        const teamMemberRow = button.parentElement;
-        teamMemberRow.remove();
-        memberCount--;
+function removeTeamMember(button) {
+    const teamMemberRow = button.parentElement;
+    teamMemberRow.remove();
+    memberCount--;
 
-        if (memberCount < maxMembers) {
-            document.getElementById('addTeamMemberBtn').style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'block';
-        }
+    if (memberCount < maxMembers) {
+        document.getElementById('addTeamMemberBtn').style.display = 'block';
     }
+}
 
     function updateProblemStatementsIdeaTeam() {
         const category = document.getElementById('category').value;
