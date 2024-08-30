@@ -490,7 +490,7 @@
 				<p>Don’t miss this chance to be part of something extraordinary. Apply now and take the first step towards making your innovative ideas a reality.</p>
 			</div>
 
-			<form method="POST" onsubmit="return handleFormSubmit(event)" action="https://script.google.com/macros/s/AKfycbwKiLKbOTLmDD8GTqNuuK0zfEsmPJy-yoiPp4p8SD2qk4e0S8mgB9otAL9mzklzoA4A2g/exec">
+			<form method="POST" id="hackathonForm">
 
 				<div class="form-group">
 					<label for="name">Name:</label>
@@ -540,29 +540,29 @@
 						<label for="solutionPitch">Solution Pitch:</label>
 						<textarea class="form-control" id="solutionPitch" name="solutionPitch" rows="3" placeholder="Describe your solution" required></textarea>
 					</div>
-					<h5>Team Members (Max 6)</h5>
+					<h5>Team Members (Max 5)</h5>
 					<div id="teamMembers">
-						<div class="team-member-row" id="teamMemberRow1">
-							<input type="text" class="form-control" name="teamMemberName1" placeholder="Name" required>
-							<input type="text" class="form-control" name="teamMemberRoll1" placeholder="Roll Number" required>
-							<input type="email" class="form-control" name="teamMemberEmail1" placeholder="Email" required>
-							<input type="text" class="form-control" name="teamMemberSkills1" placeholder="Skills" required>
-						</div>
-						<div class="team-member-row" id="teamMemberRow2">
-							<input type="text" class="form-control" name="teamMemberName2" placeholder="Name" required>
-							<input type="text" class="form-control" name="teamMemberRoll2" placeholder="Roll Number" required>
-							<input type="email" class="form-control" name="teamMemberEmail2" placeholder="Email" required>
-							<input type="text" class="form-control" name="teamMemberSkills2" placeholder="Skills" required>
-						</div>
-						<div class="team-member-row" id="teamMemberRow3">
-							<input type="text" class="form-control" name="teamMemberName3" placeholder="Name" required>
-							<input type="text" class="form-control" name="teamMemberRoll3" placeholder="Roll Number" required>
-							<input type="email" class="form-control" name="teamMemberEmail3" placeholder="Email" required>
-							<input type="text" class="form-control" name="teamMemberSkills3" placeholder="Skills" required>
-						</div>
+                        <div class="team-member-row" id="teamMemberRow1">
+                            <input type="text" class="form-control" name="teamMemberName1" placeholder="Name" required>
+                            <input type="text" class="form-control" name="teamMemberRoll1" placeholder="Roll Number" required>
+                            <input type="email" class="form-control" name="teamMemberEmail1" placeholder="Email" required>
+                            <input type="text" class="form-control" name="teamMemberSkills1" placeholder="Skills" required>
+                        </div>
+                        <div class="team-member-row" id="teamMemberRow2">
+                            <input type="text" class="form-control" name="teamMemberName2" placeholder="Name" required>
+                            <input type="text" class="form-control" name="teamMemberRoll2" placeholder="Roll Number" required>
+                            <input type="email" class="form-control" name="teamMemberEmail2" placeholder="Email" required>
+                            <input type="text" class="form-control" name="teamMemberSkills2" placeholder="Skills" required>
+                        </div>
+                        <div class="team-member-row" id="teamMemberRow3">
+                            <input type="text" class="form-control" name="teamMemberName3" placeholder="Name" required>
+                            <input type="text" class="form-control" name="teamMemberRoll3" placeholder="Roll Number" required>
+                            <input type="email" class="form-control" name="teamMemberEmail3" placeholder="Email" required>
+                            <input type="text" class="form-control" name="teamMemberSkills3" placeholder="Skills" required>
+                        </div>
 					</div>
-					<button type="button" class="btn add-member-btn" onclick="addTeamMember()">Add Team Member</button>
-					<br><br><br>
+					<button type="button"  id="addTeamMemberBtn" class="btn add-member-btn" onclick="addTeamMember()">Add Team Member</button>
+					<br><br><br><br>
 				</div>
 
 				<!-- Idea, No Team Section -->
@@ -590,7 +590,7 @@
 
 				<!-- Team, No Idea Section -->
 				<div id="teamNoIdeaSection" style="display:none;">
-					<h5>Team Members (Max 6)</h5>
+					<h5>Team Members (Max 5)</h5>
 					<div id="teamNoIdeaMembers">
 						<div class="team-member-row" id="teamNoIdeaMemberRow1">
 							<input type="text" class="form-control" name="teamNoIdeaMemberName1" placeholder="Name" required>
@@ -612,143 +612,280 @@
 						</div>
 					</div>
 					<button type="button" class="btn add-member-btn" onclick="addNoIdeaTeamMember()">Add Team Member</button>
-				</div>
+                    <br><br><br>
+                </div>
 
-				<button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+				<button type="submit"  id="submitBtn" class="btn btn-primary btn-block">Submit Application</button>
 			</form>
 		</div>
 
+        <button id="testBtn">Test Button</button>
+<script>
+    const testBtn = document.getElementById('testBtn');
+    testBtn.addEventListener('click', () => {
+        console.log('Button clicked');
+        testBtn.disabled = true;
+        testBtn.innerText = 'Submitting...';
+        testBtn.style.pointerEvents = 'none';
+        testBtn.style.opacity = '0.5';
+        console.log('Button state:', testBtn.disabled, testBtn.innerText);
+    });
+</script>
+
+
+
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-		<script>
-			let memberCount = 3;
-			const maxMembers = 6;
+<script>
 
-			function showApplyForm() {
-				const applyOption = document.getElementById('applyOption').value;
+let memberCount = 3;
+    const maxMembers = 5;
 
-				// Hide all sections initially
-				document.getElementById('ideaTeamSection').style.display = 'none';
-				document.getElementById('ideaNoTeamSection').style.display = 'none';
-				document.getElementById('teamNoIdeaSection').style.display = 'none';
+    function showApplyForm() {
+    const applyOption = document.getElementById('applyOption').value;
 
-				// Remove 'required' attribute from all inputs initially
-				document.querySelectorAll('input, select, textarea').forEach(input => {
-					input.removeAttribute('required');
-				});
+    // Hide all sections initially
+    document.getElementById('ideaTeamSection').style.display = 'none';
+    document.getElementById('ideaNoTeamSection').style.display = 'none';
+    document.getElementById('teamNoIdeaSection').style.display = 'none';
 
-				// Show the relevant section and add 'required' to visible inputs
-				if (applyOption === 'ideaTeam') {
-					document.getElementById('ideaTeamSection').style.display = 'block';
-					document.querySelectorAll('#ideaTeamSection input, #ideaTeamSection select, #ideaTeamSection textarea').forEach(input => {
-						input.setAttribute('required', 'required');
-					});
-				} else if (applyOption === 'ideaNoTeam') {
-					document.getElementById('ideaNoTeamSection').style.display = 'block';
-					document.querySelectorAll('#ideaNoTeamSection input, #ideaNoTeamSection select, #ideaNoTeamSection textarea').forEach(input => {
-						input.setAttribute('required', 'required');
-					});
-				} else if (applyOption === 'teamNoIdea') {
-					document.getElementById('teamNoIdeaSection').style.display = 'block';
-					document.querySelectorAll('#teamNoIdeaSection input').forEach(input => {
-						input.setAttribute('required', 'required');
-					});
-				}
-			}
+    // Remove 'required' attribute from all inputs initially
+    document.querySelectorAll('#ideaTeamSection input, #ideaNoTeamSection input, #teamNoIdeaSection input, #ideaTeamSection select, #ideaNoTeamSection select, #teamNoIdeaSection select, #ideaTeamSection textarea, #ideaNoTeamSection textarea').forEach(input => {
+        input.removeAttribute('required');
+    });
 
-			function addTeamMember() {
-				if (memberCount >= maxMembers) 
-					return;
-				
+    resetTeamMembers();
 
-				memberCount++;
-				const memberRow = document.createElement('div');
-				memberRow.className = 'team-member-row';
-				memberRow.innerHTML = `
-            <input type="text" class="form-control" placeholder="Name" required>
-            <input type="text" class="form-control" placeholder="Roll Number" required>
-            <input type="email" class="form-control" placeholder="Email" required>
-            <input type="text" class="form-control" placeholder="Skills" required>
+    if (applyOption === 'ideaTeam') {
+        document.getElementById('ideaTeamSection').style.display = 'block';
+        document.querySelectorAll('#ideaTeamSection input, #ideaTeamSection select, #ideaTeamSection textarea').forEach(input => {
+            input.setAttribute('required', 'required');
+        });
+    } else if (applyOption === 'ideaNoTeam') {
+        document.getElementById('ideaNoTeamSection').style.display = 'block';
+        document.querySelectorAll('#ideaNoTeamSection input, #ideaNoTeamSection select, #ideaNoTeamSection textarea').forEach(input => {
+            input.setAttribute('required', 'required');
+        });
+    } else if (applyOption === 'teamNoIdea') {
+        document.getElementById('teamNoIdeaSection').style.display = 'block';
+        document.querySelectorAll('#teamNoIdeaSection input').forEach(input => {
+            input.setAttribute('required', 'required');
+        });
+    }
+}
+
+function resetTeamMembers() {
+    memberCount = 3;
+
+    const teamMembersContainer = document.getElementById('teamMembers');
+    const teamNoIdeaMembersContainer = document.getElementById('teamNoIdeaMembers');
+
+    console.log("Resetting team members");
+    console.log("Initial teamMembersContainer children count:", teamMembersContainer ? teamMembersContainer.children.length : "N/A");
+    console.log("Initial teamNoIdeaMembersContainer children count:", teamNoIdeaMembersContainer ? teamNoIdeaMembersContainer.children.length : "N/A");
+
+    // Filter out non-relevant nodes
+    function isTeamMemberElement(node) {
+        return node.nodeType === 1 && node.matches('.team-member-row');
+    }
+
+    // Reset team members in "Have Idea + Team" section
+    if (teamMembersContainer) {
+        let children = Array.from(teamMembersContainer.children).filter(isTeamMemberElement);
+        while (children.length > 3) {
+            const lastChild = children.pop();
+            if (lastChild && teamMembersContainer.contains(lastChild)) {
+                console.log("Removing child from teamMembersContainer:", lastChild);
+                teamMembersContainer.removeChild(lastChild);
+            } else {
+                console.error("Error: Attempted to remove a node that isn't a child of teamMembersContainer.");
+                break;
+            }
+        }
+    }
+
+    // Reset team members in "Have Team, No Idea" section
+    if (teamNoIdeaMembersContainer) {
+        let children = Array.from(teamNoIdeaMembersContainer.children).filter(isTeamMemberElement);
+        while (children.length > 3) {
+            const lastChild = children.pop();
+            if (lastChild && teamNoIdeaMembersContainer.contains(lastChild)) {
+                console.log("Removing child from teamNoIdeaMembersContainer:", lastChild);
+                teamNoIdeaMembersContainer.removeChild(lastChild);
+            } else {
+                console.error("Error: Attempted to remove a node that isn't a child of teamNoIdeaMembersContainer.");
+                break;
+            }
+        }
+    }
+
+    console.log("Final teamMembersContainer children count:", teamMembersContainer ? teamMembersContainer.children.length : "N/A");
+    console.log("Final teamNoIdeaMembersContainer children count:", teamNoIdeaMembersContainer ? teamNoIdeaMembersContainer.children.length : "N/A");
+
+    const addTeamMemberBtn = document.getElementById('addTeamMemberBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (addTeamMemberBtn) {
+        addTeamMemberBtn.style.display = 'block';
+    } else {
+        console.error("addTeamMemberBtn does not exist.");
+    }
+
+    if (submitBtn) {
+        submitBtn.style.display = 'block';
+    } else {
+        console.error("submitBtn does not exist.");
+    }
+}
+
+
+
+
+    function addTeamMember() {
+        if (memberCount >= maxMembers) return;
+
+        memberCount++;
+        const memberRow = document.createElement('div');
+        memberRow.className = 'team-member-row';
+        memberRow.innerHTML = `
+            <input type="text" class="form-control" name="teamMemberName${memberCount}" placeholder="Name" required>
+            <input type="text" class="form-control" name="teamMemberRoll${memberCount}" placeholder="Roll Number" required>
+            <input type="email" class="form-control" name="teamMemberEmail${memberCount}" placeholder="Email" required>
+            <input type="text" class="form-control" name="teamMemberSkills${memberCount}" placeholder="Skills" required>
             <button type="button" class="btn remove-member-btn" onclick="removeTeamMember(this)">Remove</button>
         `;
-				document.getElementById('teamMembers').appendChild(memberRow);
-			}
+        document.getElementById('teamMembers').appendChild(memberRow);
 
-			function addNoIdeaTeamMember() {
-				if (memberCount >= maxMembers) 
-					return;
-				
+        if (memberCount >= maxMembers) {
+            document.getElementById('addTeamMemberBtn').style.display = 'none';
+        }
+    }
 
-				memberCount++;
-				const memberRow = document.createElement('div');
-				memberRow.className = 'team-member-row';
-				memberRow.innerHTML = `
-            <input type="text" class="form-control" placeholder="Name" required>
-            <input type="text" class="form-control" placeholder="Roll Number" required>
-            <input type="email" class="form-control" placeholder="Email" required>
-            <input type="text" class="form-control" placeholder="Skills" required>
+    function addNoIdeaTeamMember() {
+        if (memberCount >= maxMembers) return;
+
+        memberCount++;
+        const memberRow = document.createElement('div');
+        memberRow.className = 'team-member-row';
+        memberRow.innerHTML = `
+            <input type="text" class="form-control" name="teamNoIdeaMemberName${memberCount}" placeholder="Name" required>
+            <input type="text" class="form-control" name="teamNoIdeaMemberRoll${memberCount}" placeholder="Roll Number" required>
+            <input type="email" class="form-control" name="teamNoIdeaMemberEmail${memberCount}" placeholder="Email" required>
+            <input type="text" class="form-control" name="teamNoIdeaMemberSkills${memberCount}" placeholder="Skills" required>
             <button type="button" class="btn remove-member-btn" onclick="removeTeamMember(this)">Remove</button>
         `;
-				document.getElementById('teamNoIdeaMembers').appendChild(memberRow);
-			}
+        document.getElementById('teamNoIdeaMembers').appendChild(memberRow);
 
-			function removeTeamMember(button) {
-				button.parentElement.remove();
-				memberCount--;
-			}
+        if (memberCount >= maxMembers) {
+            document.getElementById('submitBtn').style.display = 'none';
+        }
+    }
 
-			function updateProblemStatementsIdeaTeam() {
-				const category = document.getElementById('category').value;
-				const problemStatementDropdown = $('#problemStatement');
+    function removeTeamMember(button) {
+        const teamMemberRow = button.parentElement;
+        teamMemberRow.remove();
+        memberCount--;
 
-				problemStatementDropdown.empty(); // Clear previous options
-				problemStatementDropdown.append('<option value="" disabled selected>Select a problem statement (PS number - Title - Organization - Theme)</option>');
+        if (memberCount < maxMembers) {
+            document.getElementById('addTeamMemberBtn').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+        }
+    }
 
-				if (problemStatements[category]) {
-					problemStatements[category].forEach(statement => {
-						const option = new Option(statement, statement);
-						problemStatementDropdown.append(option);
-					});
-				}
+    function updateProblemStatementsIdeaTeam() {
+        const category = document.getElementById('category').value;
+        const problemStatementDropdown = $('#problemStatement');
 
-				problemStatementDropdown.select2({placeholder: "Search your problem statement (PS number - Title - Organization - Theme)", allowClear: true});
-				problemStatementDropdown.trigger('change'); // Refresh the Select2 dropdown
-			}
+        problemStatementDropdown.empty(); 
+        problemStatementDropdown.append('<option value="" disabled selected>Select a problem statement (PS number - Title - Organization - Theme)</option>');
 
-			function updateProblemStatementsIdeaNoTeam() {
-				const category = document.getElementById('category2').value;
-				const problemStatementDropdown = $('#problemStatement2');
+        if (problemStatements[category]) {
+            problemStatements[category].forEach(statement => {
+                const option = new Option(statement, statement);
+                problemStatementDropdown.append(option);
+            });
+        }
 
-				problemStatementDropdown.empty(); // Clear previous options
-				problemStatementDropdown.append('<option value="" disabled selected>Select a problem statement (PS number - Title - Organization - Theme)</option>');
+        problemStatementDropdown.select2({ placeholder: "Search your problem statement", allowClear: true });
+        problemStatementDropdown.trigger('change');
+    }
 
-				if (problemStatements[category]) {
-					problemStatements[category].forEach(statement => {
-						const option = new Option(statement, statement);
-						problemStatementDropdown.append(option);
-					});
-				}
+    function updateProblemStatementsIdeaNoTeam() {
+        const category = document.getElementById('category2').value;
+        const problemStatementDropdown = $('#problemStatement2');
 
-				problemStatementDropdown.trigger('change'); // Refresh the Select2 dropdown
-			}
+        problemStatementDropdown.empty(); 
+        problemStatementDropdown.append('<option value="" disabled selected>Select a problem statement (PS number - Title - Organization - Theme)</option>');
 
-			$(document).ready(function () { // Initialize Select2 for all dropdowns on page load
-				$('#problemStatement').select2({placeholder: "Search your problem statement (PS number - Title - Organization - Theme)", allowClear: true});
-				$('#problemStatement2').select2({placeholder: "Search your problem statement (PS number - Title - Organization - Theme)", allowClear: true});
-			});
+        if (problemStatements[category]) {
+            problemStatements[category].forEach(statement => {
+                const option = new Option(statement, statement);
+                problemStatementDropdown.append(option);
+            });
+        }
 
-			function handleFormSubmit(event) {
-				event.preventDefault();
-				// Prevent the default form submission
+        problemStatementDropdown.trigger('change');
+    }
 
-				// Validate or perform any additional logic here
 
-				// Example: Display success alert with SweetAlert
-				Swal.fire({icon: 'success', title: 'Form Submitted Successfully!', text: 'Your application has been submitted.', confirmButtonText: 'OK'}).then(() => { // Optionally, you can submit the form programmatically or redirect the user
-					event.target.submit(); // Submit the form programmatically after the alert
-				});
-			}
-		</script>
+
+
+const submitButton = document.getElementById('submitBtn');
+
+
+$('#hackathonForm').on('submit', function(event) {
+    event.preventDefault();
+
+
+        // Use setTimeout to ensure the button state is applied
+        setTimeout(function() {
+            submitButton.disabled = true;
+            submitButton.innerText = 'Submitting...';
+            submitButton.style.pointerEvents = 'none';
+            submitButton.style.opacity = '0.5';
+
+            console.log('Button should now be disabled and text changed to "Submitting..."');
+        }, 50);
+
+    $.ajax({
+        url: 'https://script.google.com/macros/s/AKfycbxLq15ISxjhhjSEiOH2YT0Sbx8M7IfeptZSVf8x0Vjtk0vvH69vxNnvmD8wqW-j-Kr1lQ/exec',
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+            Swal.fire({
+                title: 'Thank you!',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // location.reload();
+                submitButton.disabled = false;
+                    submitButton.innerText = 'Submit Application';
+                    submitButton.style.pointerEvents = 'auto';
+                    submitButton.style.opacity = '1';
+            });
+        },
+        error: function(error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was an issue with your submission. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                submitButton.disabled = false;
+                submitButton.innerText = 'Submit Application';
+                submitButton.style.pointerEvents = 'auto';
+                submitButton.style.opacity = '1';
+            });
+        }
+    });
+});
+
+
+
+</script>
+        
+        
 
 	</body>
 </html>
