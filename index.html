@@ -848,12 +848,14 @@ $('#hackathonForm').on('submit', function(event) {
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then(() => {
-                // location.reload();
+
                 submitButton.disabled = false;
                     submitButton.innerText = 'Submit Application';
                     submitButton.style.pointerEvents = 'auto';
                     submitButton.style.opacity = '1';
+                    location.reload();
             });
+
         },
         error: function(error) {
             Swal.fire({
